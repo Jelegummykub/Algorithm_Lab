@@ -30,11 +30,6 @@ int main(){
             }
         }
     }
-
-    for(int i = s ; i <= e ; i++){
-        cout << A[i] << ", ";
-    }
-
-    cout << "= " << tempmax << endl;
+    cout << tempmax << endl;
 
 }
