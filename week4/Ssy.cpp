@@ -1,82 +1,109 @@
 #include <iostream>
 using namespace std;
 
-void process(int a[], int n)
+int patition(int a[], int l, int u)
 {
-    for (int i = 1; i < n; i++)
+    int pivot = a[u];
+    int i = l - 1;
+
+    for (int j = l; j < u; j++)
     {
-        for (int j = i; j > 0 && a[j] < a[j - 1]; j--)
+        if (a[j] < pivot)
         {
-            swap(a[j], a[j - 1]);
+            i++;
+            swap(a[i], a[j]);
         }
     }
 
+    swap(a[i + 1], a[u]);
+    return i + 1;
+}
+
+void quicksort(int a[], int l, int u)
+{
+    if (l < u)
+    {
+        int pivot = patition(a, l, u);
+
+        quicksort(a, l, pivot - 1);
+        quicksort(a, pivot + 1, u);
+    }
+}
+
+void findfrequency(int a[], int n)
+{
     int keep[1000];
     int count = 0;
     int max = -1;
 
     for (int i = 0; i < n; i++)
     {
-        int C[10];
+        int tempnumber[99];
         int size = 0;
         while (a[i] > 0)
         {
-            C[size++] = a[i] % 10;
+            tempnumber[size++] = a[i] % 10;
             a[i] /= 10;
         }
 
         for (int j = size - 1; j >= 0; j--)
         {
-            if (C[j] > max)
+            if (tempnumber[j] > max)
             {
-                max = C[j];
+                max = tempnumber[j];
             }
-            keep[count++] = C[j];
+
+            keep[count++] = tempnumber[j];
         }
     }
 
-    int array[10] = {0};
-    int temp = -999;
-    int countnum = 1;
+    // for (int i = 0; i < count; i++)
+    // {
+    //     cout << temp[i] << " ";
+    // }
+    // cout << endl;
+
+    int tempfrequency[10] = {0};
+    int tempmax = -999;
+    int countnumber = 1;
 
     for (int i = 0; i < count; i++)
     {
-        cout << keep[i];
-        if (temp != keep[i])
+
+        if (tempmax != keep[i])
         {
-            temp = keep[i];
-            if (array[keep[i]] != countnum)
+            tempmax = keep[i];
+            if (tempfrequency[keep[i]] != countnumber)
             {
-                array[keep[i]] = 1;
+                tempfrequency[keep[i]] = 1;
             }
         }
         else
         {
-            array[keep[i]]++;
+            tempfrequency[keep[i]]++;
         }
-        if (array[keep[i]] > countnum)
+
+        if (tempfrequency[keep[i]] > countnumber)
         {
-            countnum = array[keep[i]];
-            array[keep[i]] = countnum;
+            countnumber = tempfrequency[keep[i]];
         }
     }
-    cout << endl;
 
     for (int i = 0; i <= max; i++)
     {
-        if (array[i] == countnum)
+        if (tempfrequency[i] == countnumber)
         {
             cout << i << " ";
         }
     }
     cout << endl;
 
-    temp = -999;
+    tempmax = -999;
     for (int i = 0; i < count; i++)
     {
-        if (temp != keep[i])
+        if (tempmax != keep[i])
         {
-            temp = keep[i];
+            tempmax = keep[i];
             cout << keep[i];
         }
     }
@@ -93,5 +120,13 @@ int main()
         cin >> a[i];
     }
 
-    process(a, n);
+    quicksort(a, 0, n - 1);
+
+    for (int i = 0; i < n; i++)
+    {
+        cout << a[i];
+    }
+    cout << endl;
+
+    findfrequency(a, n);
 }
