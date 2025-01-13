@@ -1,31 +1,41 @@
 #include <iostream>
 using namespace std;
 
-int patition(int a[], int l, int r)
+int patiton(int a[], int l, int u)
 {
-    int pivot = a[r];
-    int i = l - 1;
+    int pivot = a[l];
+    int i = l + 1;
+    int j = u;
 
-    for (int j = l; j < r; j++)
+    while (i <= j)
     {
-        if (a[j] < pivot)
+        while (a[i] < pivot)
         {
             i++;
-            swap(a[i], a[j]);
         }
+
+        while (a[j] > pivot)
+        {
+            j--;
+        }
+
+        swap(a[i], a[j]);
     }
-    swap(a[i + 1], a[r]);
-    return i + 1;
+
+    swap(a[i], a[j]);
+    swap(a[l], a[j]);
+
+    return j;
 }
 
-void quicksort(int a[], int l, int r)
+void quicksort(int a[], int l, int u)
 {
-    if (l < r)
+    if (l < u)
     {
-        int pi = patition(a, l, r);
+        int pivot = patiton(a, l, u);
 
-        quicksort(a, l, pi - 1);
-        quicksort(a, pi + 1, r);
+        quicksort(a, l, pivot - 1);
+        quicksort(a, pivot + 1, u);
     }
 }
 
@@ -34,6 +44,7 @@ int main()
     int n;
     cin >> n;
     int a[n];
+
     for (int i = 0; i < n; i++)
     {
         cin >> a[i];
