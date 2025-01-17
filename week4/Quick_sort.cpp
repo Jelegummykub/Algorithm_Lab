@@ -24,7 +24,7 @@ int patiton(int a[], int l, int u)
 
     swap(a[i], a[j]);
     swap(a[l], a[j]);
-
+    cout << "FDsdf" << j << endl;
     return j;
 }
 
