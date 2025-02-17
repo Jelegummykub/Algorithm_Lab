@@ -1,46 +1,84 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
-
-vector<int> select;
-
-void subset(vector<int> &x, int l, int sum, int n, int m)
+int value[9999];
+int maxx = 0;
+int price = 0;
+int save[3];
+void subset(int A[], int left, int k, int right, int temp)
 {
-    if (select.size() == 3)
+    if (temp > price)
     {
-        if (sum <= m)
+        return;
+    }
+    if (left == k)
+    {
+        int temp[3];
+        int sum = 0;
+        for (int i = 0; i < k; i++)
         {
-            sort(select.begin(), select.end());
-            cout << select[0] << endl
-                 << select[1] << endl
-                 << select[2] << endl;
-            exit(0);
+            sum += value[A[i] - 1];
+            temp[i] = value[A[i] - 1];
+        }
+        if (sum > maxx && sum <= price)
+        {
+            maxx = sum;
+            for (int i = 0; i < k; i++)
+            {
+                save[i] = temp[i];
+            }
         }
         return;
     }
-
-    if (l == n)
+    else
     {
-        return;
-    }
+        for (int i = left; i < right; i++)
+        {
+            bool check = true;
+            for (int j = 0; j < left; j++)
+            {
+                if (A[j] == i + 1 || A[j] > i + 1)
+                {
+                    check = false;
+                    break;
+                }
+            }
+            if (check)
+            {
 
-    select.push_back(x[l]);
-    subset(x, l + 1, sum + x[l], n, m);
-    select.pop_back();
-    subset(x, l + 1, sum, n, m);
+                A[left] = i + 1;
+                temp += A[left];
+                subset(A, left + 1, k, right, temp);
+            }
+        }
+    }
 }
 
 int main()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<int> book(n);
-
+    int n;
+    cin >> n >> price;
+    int A[3];
     for (int i = 0; i < n; i++)
     {
-        cin >> book[i];
+        cin >> value[i];
+    }
+    int temp = 0;
+
+    subset(A, 0, 3, n, temp);
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (save[i] < save[j])
+            {
+                swap(save[i], save[j]);
+            }
+        }
     }
 
-    subset(book, 0, 0, n, m);
+    for (int i = 0; i < 3; i++)
+    {
+        cout << save[i] << endl;
+    }
 }

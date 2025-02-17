@@ -8,7 +8,7 @@ void permute(vector<string> &x, int l, int r)
     {
         for (int i = 0; i <= r; i++)
         {
-            cout << "fd" << x[i] << " ";
+            cout << x[i] << " ";
         }
         cout << endl;
         return;
