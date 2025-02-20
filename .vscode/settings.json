@@ -6,6 +6,9 @@
     "vector": "cpp",
     "print": "cpp",
     "string": "cpp",
-    "istream": "cpp"
+    "istream": "cpp",
+    "iomanip": "cpp",
+    "__locale": "cpp",
+    "algorithm": "cpp"
   }
 }
