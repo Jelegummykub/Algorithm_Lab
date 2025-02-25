@@ -3,27 +3,33 @@
 #include <algorithm>
 using namespace std;
 
-int platform(int n, vector<double> &a, vector<double> &b)
+bool compare(pair<double, double> &x, pair<double, double> &y)
 {
+    return x.second < y.second;
+}
 
-    int result = 1;
+void platform(vector<pair <double , double> > &a, int n)
+{
+    sort(a.begin(), a.end(), compare);
 
-    for (int i = 0; i < n; i++)
+    priority_queue<double, vector<double>, greater<double> > q;
+
+    q.push(0);
+
+    for (int i = 0; i < a.size(); i++)
     {
-        int count = 1;
-        for (int j = 0; j < n; j++)
+        int start = a[i].first;
+        int end = a[i].second;
+
+        int finish = q.top();
+
+        if (finish <= start)
         {
-            if (i != j)
-            {
-                if (a[i] < b[j] && b[i] > a[j])
-                {
-                    count++;
-                }
-            }
+            q.pop(); 
         }
-        result = max(count, result);
+        q.push(end);
     }
-    return result;
+    cout << q.size() << endl;
 }
 
 int main()
@@ -31,22 +37,11 @@ int main()
     int n;
     cin >> n;
 
-    vector<double> a(n);
-    vector<double> b(n);
+    vector<pair<double, double> > a(n);
 
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
+    for(int i = 0 ; i < n ; i++){
+        cin >> a[i].first >> a[i].second;
     }
 
-    for (int i = 0; i < n; i++)
-    {
-        cin >> b[i];
-    }
-
-    int result = platform(n, a, b);
-
-    cout << result << endl;
+    platform(a , n);
 }
-
-// TODO: Not working

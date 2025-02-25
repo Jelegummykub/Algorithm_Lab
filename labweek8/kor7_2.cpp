@@ -5,24 +5,19 @@ using namespace std;
 
 bool compare(pair<int, int> &x, pair<int, int> &y)
 {
-    if (x.second == y.second)
-    {
-        return x.second < y.first;
-    }
-    return x.second < y.second;
+    return x.first < y.first;
 }
 
 void activity(vector<pair<int, int> > &a, int n)
 {
     sort(a.begin(), a.end(), compare);
 
-    int last_end = -50001;
+    int last_end = -1;
     vector<pair<int, int> > result;
 
-    cout << "====================" << endl;
     for (int i = 0; i < n; i++)
     {
-        if (a[i].first > last_end)
+        if (a[i].first >= last_end)
         {
             result.push_back(a[i]);
             last_end = a[i].second;
@@ -49,5 +44,3 @@ int main()
 
     activity(a, n);
 }
-
-// TODO : Not solved yet
