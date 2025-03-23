@@ -2,51 +2,39 @@
 #include <vector>
 using namespace std;
 
-int sum(vector<int> &a, int n, int k)
-{
-    vector<vector<int> > memo(n + 1, vector<int>(n + 1, -1));
+vector<vector<int> > x(100, vector<int>(100, -1));
 
-    if (k == 0)
-    {
+int subset(vector<int> &A, int n, int sum,int count)
+{
+    if (sum == 0){
+        return count+1;
+    } 
+    if (n == 0 || sum < 0) {
         return 0;
     }
 
-    if(n == 0 || k < 0){
-        return -1;
-    }
+    if (x[n][sum] != -1){
+        return x[n][sum];
+    } 
 
-    if (memo[n][k] != -1)
+    if (A[n-1] > sum)
     {
-        return memo[n][k];
+        return x[n][sum] = subset(A, n - 1, sum, count);
     }
-
-    int temp = sum(a, n - 1, k);
-    int select = -1;
     
-    if (k >= a[n - 1])
-    {
-        int res = sum(a, n - 1, k - a[n - 1]);
-        if (res != -1)
-        {
-            select = res + 1;
-        }
-    }
-
-    return memo[n][k] = max(temp, select);
+    return x[n][sum] = max(subset(A,n-1,sum-A[n-1],count+1), subset(A, n - 1, sum, count));
 }
 
-int main()
-{
-    int n;
+int main(){
+
+    int n, k;
     cin >> n;
-    vector<int> arr(n);
+    vector<int> A(n);
     for (int i = 0; i < n; i++)
     {
-        cin >> arr[i];
+        cin >> A[i];
     }
-    int k;
     cin >> k;
+    cout << subset(A, n, k,0) << endl;
 
-    int result = sum(arr, n, k);
-    cout << result << endl;
 }
